@@ -96,7 +96,7 @@
       </div>
 
      <div class="col col-12">
-        <line-chart source="commits1"
+        <line-chart source="commits100"
                     title="Commits > 100 / Week" 
                     cite-url="https://github.com/chaoss/metrics/blob/master/activity-metrics/community-activity.md"
                     cite-text="Community Activty">
@@ -104,7 +104,7 @@
     </div>
     
     <div class="col col-12">
-        <line-chart source="contributors1"
+        <line-chart source="fakes"
                     title="Fake Contributors" 
                     cite-url="https://github.com/chaoss/metrics/blob/master/activity-metrics/community-activity.md"
                     cite-text="Community Activty">
