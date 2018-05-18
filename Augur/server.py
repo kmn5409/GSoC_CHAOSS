@@ -143,7 +143,7 @@ def api_root():
                     ]
 """
 addTimeseries(app, ghtorrent.commits, 'commits')
-addTimeseries(app, ghtorrent.commits1, 'commits1')
+addTimeseries(app, ghtorrent.commits100, 'commits100')
 
 """
 @api {get} /:owner/:repo/timeseries/commits/comments count of commit comments weekly
@@ -663,7 +663,7 @@ addTimeseries(app, downloads.downloads, 'downloads')
                     ]
 """
 addMetric(app, ghtorrent.contributors, 'contributors')
-addTimeseries(app, ghtorrent.contributors1, 'contributors1')
+addTimeseries(app, ghtorrent.fakes, 'fakes')
 
 #######################
 # Contribution Trends #
