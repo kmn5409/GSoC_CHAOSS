@@ -1,7 +1,7 @@
 This is a list of commands you would use to implement the Piper_reader.py
 
 You would also need to have mysql installed on your computer
-Check out this guide to set it up [https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04]
+Check out this [guide](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04) to set it up 
 pip install virtualenv
 mkdir keanu3
 cd keanu3
