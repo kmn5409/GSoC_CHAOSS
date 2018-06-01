@@ -32,7 +32,7 @@ def add_row(columns,df,di):
 	for j in range(0,len(temp)):
 		words+=temp[j]
 		if(temp[j] == "\n" and j+1<len(temp)):
-			if(temp[j+1] == ">"):
+			if(temp[j+1] == ">" or j>10000):
 				di['data']['body']['plain'] = words
 				break
 	li = [[di["backend_name"],di['category'],di['data']['Date'],
@@ -43,7 +43,7 @@ def add_row(columns,df,di):
 	return df3
 	
 	
-archives = ["aalldp-dev","aaa-dev"]
+archives = ["aalldp-dev","aaa-dev","advisory-group","affinity-dev","alto-dev"]
 engine = s.create_engine('mysql+mysqlconnector://root:Password@localhost/Pipermail?charset=utf8')
 if not database_exists(engine.url):
     create_database(engine.url)
