@@ -1,0 +1,42 @@
+{
+    "backend_name": "Pipermail",
+    "backend_version": "0.4.3",
+    "category": "message",
+    "data": {
+        "Date": "Thu, 24 Mar 2016 20:37:11 +0000",
+        "From": "An.Ho at huawei.com (An Ho)",
+        "Message-ID": "<EEEA408CE50B48498B9F866085AEF2912FAEEAAD@SJCEML701-CHM.china.huawei.com>",
+        "Subject": "[aalldp-dev] AALLDP Active Committers",
+        "body": {
+            "plain": "Hi Brian Kaczynski <kaczynskib at avaya.com>, Dennis Flynn <drflynn at avaya.com>,\n\nPlease reply to this email to indicate that you are still an active committer on this project.\n\nBest Regards,\nAn Ho\n\n\n\n\n\n"
+        },
+        "unixfrom": "An.Ho at huawei.com  Thu Mar 24 20:37:11 2016"
+    },
+    "origin": "https://lists.opendaylight.org/pipermail/aalldp-dev/",
+    "perceval_version": "0.9.10",
+    "tag": "https://lists.opendaylight.org/pipermail/aalldp-dev/",
+    "timestamp": 1527614040.099156,
+    "updated_on": 1458851831.0,
+    "uuid": "e7fe17cd66a8049327991c42dd8bd1dccbad0072"
+}
+{
+    "backend_name": "Pipermail",
+    "backend_version": "0.4.3",
+    "category": "message",
+    "data": {
+        "Date": "Thu, 24 Mar 2016 20:37:08 +0000",
+        "From": "An.Ho at huawei.com (An Ho)",
+        "Message-ID": "<EEEA408CE50B48498B9F866085AEF2912FAEEAA0@SJCEML701-CHM.china.huawei.com>",
+        "Subject": "[aalldp-dev] Plans for Archiving AALLDP Project",
+        "body": {
+            "plain": "Hi AALLDP Team,\n\n\n\n1. Does your project have any plans to be archived?  If your project has no plans for any future active development, project committers can vote to move a project to the Archived State by a Termination Review according to the OpenDaylight Project Lifecycle and Releases document [1].\n\n2. If you projects plans to remain active, does it intend to participate in the Boron Simultaneous Release as documented in the Boron Release Plan [2]?  If not, could someone please publicly decline to participate with a message like so: \"The <PROJECT_NAME> project is formally declining to participate in the Boron SR\".\n\n\n\nThere are no project related activity on Gerrit.\n\n\n\nBest Regards,\n\nAn Ho\n\n\n\n[1] https://www.opendaylight.org/project-lifecycle-releases\n\n[2] https://wiki.opendaylight.org/view/Simultaneous_Release:Boron_Release_Plan\n\n\n-------------- next part --------------\nAn HTML attachment was scrubbed...\nURL: <http://lists.opendaylight.org/pipermail/aalldp-dev/attachments/20160324/6e137881/attachment.html>\n"
+        },
+        "unixfrom": "An.Ho at huawei.com  Thu Mar 24 20:37:08 2016"
+    },
+    "origin": "https://lists.opendaylight.org/pipermail/aalldp-dev/",
+    "perceval_version": "0.9.10",
+    "tag": "https://lists.opendaylight.org/pipermail/aalldp-dev/",
+    "timestamp": 1527614040.104825,
+    "updated_on": 1458851828.0,
+    "uuid": "5dbcec42476863ba2e22e68c4327b222eea65fe2"
+}
