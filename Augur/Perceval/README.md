@@ -5,15 +5,15 @@ Check out this [guide](https://www.digitalocean.com/community/tutorials/how-to-i
 
 ## Requirements
 ```bash
-pip install virtualenv<br/>
-mkdir keanu3<br/>
-cd keanu3<br/>
-virtualenv keanu3<br/>
-source activate keanu3<br/>
-git clone https://github.com/kmn5409/GSoC_CHAOSS.git<br/>
-cd GSoC_CHAOSS/Augur/Perceval<br/>
-pip install pandas<br/>
-pip install sqlalchemy<br/>
-pip install mysql-connector-python-rf<br/>
-pip install sqlalchemy_utils<br/>
+pip install virtualenv
+mkdir keanu3
+cd keanu3
+virtualenv keanu3
+source activate keanu3
+git clone https://github.com/kmn5409/GSoC_CHAOSS.git
+cd GSoC_CHAOSS/Augur/Perceval
+pip install pandas
+pip install sqlalchemy
+pip install mysql-connector-python-rf
+pip install sqlalchemy_utils
 ```
