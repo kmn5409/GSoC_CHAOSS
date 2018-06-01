@@ -85,4 +85,4 @@ for i in range(len(archives)):
 	df = df.reset_index(drop=True)
 	df.to_csv(archives[i] + ".csv")
 	print(pd.read_csv(archives[i] + ".csv",index_col=0))
-	df.to_sql(name="temp"+str(i), con=engine, if_exists = 'replace', index=False,)
+	df.to_sql(name=archives[i], con=engine, if_exists = 'replace', index=False,)
