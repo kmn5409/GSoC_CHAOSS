@@ -45,7 +45,7 @@ def add_row(columns,df,di):
 	return df3
 class Piper_mail:
 	def __init__(self):
-		#print(os.getcwd())
+		print(os.getcwd())
 		archives = ["aalldp-dev","aaa-dev","advisory-group","affinity-dev","alto-dev","archetypes-dev"]
 		engine = s.create_engine('mysql+mysqlconnector://root:Dc1Kk1Sh2Oh1@localhost/Pipermail?charset=utf8')
 		if not database_exists(engine.url):
@@ -57,10 +57,14 @@ class Piper_mail:
 				path = os.getcwd() + "/augur/" + "data/" 
 		else:
 			path = "data/"	'''
-		path = "data/"
+		path = "/augur/data/"
 		for i in range(len(archives)):
-
-			f = open(path + 'opendaylight-' + archives[i] + '.json','r')
+			place = os.getcwd() + path + 'opendaylight-' + archives[i]
+			name = os.getcwd() + path + archives[i]
+			if(os.path.exists(name + '.csv')):
+				print("LEROYYYYYYYYY!!!!!!!!")
+				continue
+			f = open(place + '.json','r')
 			x = f.read()
 			temp = json.dumps(x)
 			f.close()
@@ -95,6 +99,6 @@ class Piper_mail:
 				df = add_row(columns,df,di)
 
 			df = df.reset_index(drop=True)
-			df.to_csv(path + archives[i] + ".csv")
-			print(pd.read_csv(path + archives[i] + ".csv",index_col=0))
+			df.to_csv(name + ".csv")
+			print(pd.read_csv(name + ".csv",index_col=0))
 			df.to_sql(name=archives[i], con=engine, if_exists = 'replace', index=False,)
