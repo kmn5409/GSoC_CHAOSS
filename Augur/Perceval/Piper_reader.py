@@ -50,7 +50,7 @@ class Piper_mail:
 		engine = s.create_engine('mysql+mysqlconnector://root:Dc1Kk1Sh2Oh1@localhost/Pipermail?charset=utf8')
 		if not database_exists(engine.url):
 		    create_database(engine.url)
-		print(os.getcwd())	
+		#print(os.getcwd())	
 		'''if("augur/notebooks" in os.getcwd()):
 				os.chdir("..")
 				print(os.getcwd())
@@ -87,12 +87,12 @@ class Piper_mail:
 					      di['data']['From'],di['data']['Message-ID'],
 					      di['data']['body']['plain']]]
 			df = pd.DataFrame(li,columns=columns)
-			print(len(x))
+			#print(len(x))
 			#print(j)
 			while(j<len(x)):
 				data,r= read_json(x[j:])
 				j+=r
-				print(j,"\n\n\n")
+				#print(j,"\n\n\n")
 				if(j==len(x)):
 					break
 				di = json.loads(data)
