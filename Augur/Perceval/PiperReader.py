@@ -27,22 +27,33 @@ def read_json(p):
 		#print(k)
 		return y,j
 
-def add_row_mess(columns1,df,di,archives):
+def add_row_mess(columns1,df,di,archives,row):
 	temp = 	di['data']['body']['plain']
 	words = ""
+	k = 1
 	for j in range(0,len(temp)):
 		words+=temp[j]
 		if(temp[j] == "\n" and j+1<len(temp)):
-			if(temp[j+1] == ">" or j>10000):
+			if(temp[j+1] == ">" or j>k*10000):
 				di['data']['body']['plain'] = words
-				break
-	li = [[di['backend_name'],di['origin'],archives,
-		   di['category'], di['data']['Subject'],
-		   di['data']['Date'], di['data']['From'],
-		   di['data']['Message-ID'],
-		   di['data']['body']['plain'] ]]
-	df1 = pd.DataFrame(li,columns=columns1)
-	df3 = df.append(df1)
+				k+=1
+				li = [[di['backend_name'],di['origin'],archives,
+				di['category'], di['data']['Subject'],
+				di['data']['Date'], di['data']['From'],
+				di['data']['Message-ID'],
+				di['data']['body']['plain'] ]]
+				df1 = pd.DataFrame(li,columns=columns1)
+				df3 = df.append(df1)
+	print(len(temp),"length")
+	print(archives,j,row)
+	if(j+1==len(temp)):
+		li = [[di['backend_name'],di['origin'],archives,
+		di['category'], di['data']['Subject'],
+		di['data']['Date'], di['data']['From'],
+		di['data']['Message-ID'],
+		di['data']['body']['plain'] ]]
+		df1 = pd.DataFrame(li,columns=columns1)
+		df3 = df.append(df1)
 	return df3
 
 def add_row_mail_list(columns2,di,df_mail_list):
@@ -87,7 +98,7 @@ class PiperMail:
 		print("ugh")
 		print(link)
 		upload  = False
-		archives = ["aalldp-dev","affinity-dev","archetypes-dev","aaa-dev"]
+		archives = ["aalldp-dev","aaa-dev","advisory-group","affinity-dev","alto-dev","archetypes-dev"]
 		'''if("augur/notebooks" in os.getcwd()):
 				os.chdir("..")
 				print(os.getcwd())
@@ -134,20 +145,31 @@ class PiperMail:
 			#print(len(x))
 			#print(j)
 			val = False
+			row = 0
+			y = 1
 			while(j<len(x)):
+				if(row>y*1000):
+					y+=1
+					df = df.reset_index(drop=True)
+					df.to_sql(name=archives[i], con=self.db,if_exists='append',index=False)
+					df.to_csv(name + ".csv", mode='a')
+					df1= pd.DataFrame(columns = columns1)
+					df = df1
+					#print(df)
 				data,r= read_json(x[j:])
 				j+=r
 				#print(j,"\n\n\n")
 				if(j==len(x)):
 					break
 				di = json.loads(data)
-				df = add_row_mess(columns1,df,di,archives[i])
+				df = add_row_mess(columns1,df,di,archives[i],row)
+				row+=1
 			if(i!=0):
 				df_mail_list = add_row_mail_list(columns2,di,df_mail_list)
 			df = df.reset_index(drop=True)
-			df.to_csv(name + ".csv")
+			df.to_csv(name + ".csv", mode='a')
 			#print(archives[i])
-			df.to_sql(name=archives[i], con=self.db, if_exists = 'replace', index=False)
+			df.to_sql(name=archives[i], con=self.db,if_exists='append',index=False)
 			print("File uploaded")
 			upload = True
 		print(upload)
