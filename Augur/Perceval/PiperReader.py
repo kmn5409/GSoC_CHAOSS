@@ -1,18 +1,15 @@
 import json
 import pandas as pd
-from sys import exit
-import pprint 
 #import mysql.connector
 from sqlalchemy import create_engine
 import sqlalchemy as s
 #from sqlalchemy_utils import database_exists, create_database
 from augur import logger
-from augur.ghtorrentplus import GHTorrentPlus
 import os
 import augur
 #if(line[j:j+11]=="},\"unixfrom\"" or line[j:j+9] == "},\"origin\"" ):
 #9359610
-#1355
+#1355 add-dev
 #Need to have pip install sqlalchemy-utils
 def read_json(p):
 		#print(p,"\n\n")
@@ -30,7 +27,7 @@ def read_json(p):
 		#print(k)
 		return y,j
 
-def add_row(columns,df,di):
+def add_row_mess(columns1,df,di):
 	temp = 	di['data']['body']['plain']
 	words = ""
 	for j in range(0,len(temp)):
@@ -42,9 +39,17 @@ def add_row(columns,df,di):
 	li = [[di["backend_name"],di['category'],di['data']['Date'],
 		      di['data']['From'],di['data']['Message-ID'],
 		      di['data']['body']['plain']]]
-	df1 = pd.DataFrame(li,columns=columns)
+	df1 = pd.DataFrame(li,columns=columns1)
 	df3 = df.append(df1)
 	return df3
+
+def add_row_mail_list(columns2,di,df_mail_list):
+	li = [[di['backend_name'], di['origin']]]
+	#print("yeah",di['origin'])
+	df = pd.DataFrame(li,columns=columns2)
+	#print(df)
+	df4 = df_mail_list.append(df)
+	return df4
 
 class PiperMail:
 	def __init__(self, user, password, host, port, dbname, ghtorrent, buildMode="auto"):
@@ -75,10 +80,12 @@ class PiperMail:
 		#if not database_exists(engine.url):
 		 #   create_database(engine.url)
 		#print(os.getcwd())		
-	def make(self):
+	def make(self,link):
 		#print(self.db)
 		print("ugh")
-		archives = ["aalldp-dev","aaa-dev","advisory-group","affinity-dev","alto-dev","archetypes-dev"]
+		print(link)
+		upload  = False
+		archives = ["aalldp-dev","affinity-dev","archetypes-dev","aaa-dev"]
 		'''if("augur/notebooks" in os.getcwd()):
 				os.chdir("..")
 				print(os.getcwd())
@@ -111,13 +118,18 @@ class PiperMail:
 			#hard to upload to the database would have to decode it and upload
 			#to the database and then encode it back when requesting from
 			#the database
-			columns = "backend_name","category","Date","From","Message-ID","Text"
+			columns1 = "backend_name","category","Date","From","Message-ID","Text"
 			li = [[di["backend_name"],di['category'],di['data']['Date'],
 					      di['data']['From'],di['data']['Message-ID'],
 					      di['data']['body']['plain']]]
-			df = pd.DataFrame(li,columns=columns)
+			df = pd.DataFrame(li,columns=columns1)
+			columns2 = "backend_name","origin"
+			if(i==0):
+				li = [[di["backend_name"],di["origin"]]]
+				df_mail_list = pd.DataFrame(li,columns=columns2)
 			#print(len(x))
 			#print(j)
+			val = False
 			while(j<len(x)):
 				data,r= read_json(x[j:])
 				j+=r
@@ -125,12 +137,22 @@ class PiperMail:
 				if(j==len(x)):
 					break
 				di = json.loads(data)
-				df = add_row(columns,df,di)
-
+				df = add_row_mess(columns1,df,di)
+			if(i!=0):
+				df_mail_list = add_row_mail_list(columns2,di,df_mail_list)
 			df = df.reset_index(drop=True)
 			df.to_csv(name + ".csv")
 			#print(archives[i])
-			df.to_sql(name=archives[i], con=self.db, if_exists = 'replace', index=False,)
+			df.to_sql(name=archives[i], con=self.db, if_exists = 'replace', index=False)
 			print("File uploaded")
+			upload = True
+		print(upload)
+		if(upload == True):
+			#print(df_mail_list)
+			df_mail_list = df_mail_list.reset_index(drop=True)
+			name = os.getcwd() + path + "Mailing_List"
+			df_mail_list.to_csv(name + ".csv")
+			#print("Here")
+			df_mail_list.to_sql(name='Mailing_Lists',con=self.db,if_exists='replace',index=False)
 		print("Finished")
 	
