@@ -27,7 +27,7 @@ def read_json(p):
 		#print(k)
 		return y,j
 
-def add_row_mess(columns1,df,di):
+def add_row_mess(columns1,df,di,archives):
 	temp = 	di['data']['body']['plain']
 	words = ""
 	for j in range(0,len(temp)):
@@ -36,9 +36,11 @@ def add_row_mess(columns1,df,di):
 			if(temp[j+1] == ">" or j>10000):
 				di['data']['body']['plain'] = words
 				break
-	li = [[di["backend_name"],di['category'],di['data']['Date'],
-		      di['data']['From'],di['data']['Message-ID'],
-		      di['data']['body']['plain']]]
+	li = [[di['backend_name'],di['origin'],archives,
+		   di['category'], di['data']['Subject'],
+		   di['data']['Date'], di['data']['From'],
+		   di['data']['Message-ID'],
+		   di['data']['body']['plain'] ]]
 	df1 = pd.DataFrame(li,columns=columns1)
 	df3 = df.append(df1)
 	return df3
@@ -118,14 +120,16 @@ class PiperMail:
 			#hard to upload to the database would have to decode it and upload
 			#to the database and then encode it back when requesting from
 			#the database
-			columns1 = "backend_name","category","Date","From","Message-ID","Text"
-			li = [[di["backend_name"],di['category'],di['data']['Date'],
-					      di['data']['From'],di['data']['Message-ID'],
-					      di['data']['body']['plain']]]
+			columns1 = 'backend_name','project','mailing_list','category','subject','date','message_from','message_id','message_text'
+			li = [[di['backend_name'],di['origin'],archives[i],
+		   		   di['category'], di['data']['Subject'],
+		           di['data']['Date'], di['data']['From'],
+		           di['data']['Message-ID'],
+		           di['data']['body']['plain'] ]]
 			df = pd.DataFrame(li,columns=columns1)
 			columns2 = "backend_name","origin"
 			if(i==0):
-				li = [[di["backend_name"],di["origin"]]]
+				li = [[di['backend_name'],di['origin']]]
 				df_mail_list = pd.DataFrame(li,columns=columns2)
 			#print(len(x))
 			#print(j)
@@ -137,7 +141,7 @@ class PiperMail:
 				if(j==len(x)):
 					break
 				di = json.loads(data)
-				df = add_row_mess(columns1,df,di)
+				df = add_row_mess(columns1,df,di,archives[i])
 			if(i!=0):
 				df_mail_list = add_row_mail_list(columns2,di,df_mail_list)
 			df = df.reset_index(drop=True)
