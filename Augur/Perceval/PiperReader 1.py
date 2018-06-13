@@ -10,7 +10,6 @@ import augur
 #if(line[j:j+11]=="},\"unixfrom\"" or line[j:j+9] == "},\"origin\"" ):
 #9359610
 #1355 add-dev
-#428 alto-dev
 #Need to have pip install sqlalchemy-utils
 def read_json(p):
 		#print(p,"\n\n")
@@ -28,51 +27,25 @@ def read_json(p):
 		#print(k)
 		return y,j
 
-def add_row_mess(columns1,df,di,archives,row):
+
+def add_row_mess(columns1,df,di,archives):
 	temp = 	di['data']['body']['plain']
 	words = ""
-	k = 1
-	val = False
 	for j in range(0,len(temp)):
 		words+=temp[j]
-		if(j>k*5000):
-			if(val == True):
-				df2 = df1
-				df2['message_text'] = words
-				df3 = df.append(df2,ignore_index=True)
-				words=""
-			else:
-				val = True
+		if(temp[j] == "\n" and j+1<len(temp)):
+			if(temp[j+1] == ">" or j>10000):
 				di['data']['body']['plain'] = words
-				words=""
-				k+=1
-				li = [[di['backend_name'],di['origin'],archives,
-				di['category'], di['data']['Subject'],
-				di['data']['Date'], di['data']['From'],
-				di['data']['Message-ID'],
-				di['data']['body']['plain'] ]]
-				df1 = pd.DataFrame(li,columns=columns1)
-				df3 = df.append(df1,ignore_index=True)
-			#if(row==428):
-				#print(df1)
-			#if(row==428):
-				#print("\n\n",df3,"\n\n")
-	print(len(temp),"length")
-	#if(row==428):
-	#	print(df3)
-	print(row)
-	if(k==1):
-		di['data']['body']['plain'] = words
-		li = [[di['backend_name'],di['origin'],archives,
-		di['category'], di['data']['Subject'],
-		di['data']['Date'], di['data']['From'],
-		di['data']['Message-ID'],
-		di['data']['body']['plain'] ]]
-		df1 = pd.DataFrame(li,columns=columns1)
-		df3 = df.append(df1)
-	#if(row == 430):
-	#	print(df3)
+				break
+	li = [[di['backend_name'],di['origin'],archives,
+		   di['category'], di['data']['Subject'],
+		   di['data']['Date'], di['data']['From'],
+		   di['data']['Message-ID'],
+		   di['data']['body']['plain'] ]]
+	df1 = pd.DataFrame(li,columns=columns1)
+	df3 = df.append(df1)
 	return df3
+
 
 def add_row_mail_list(columns2,di,df_mail_list):
 	li = [[di['backend_name'], di['origin']]]
@@ -81,6 +54,7 @@ def add_row_mail_list(columns2,di,df_mail_list):
 	#print(df)
 	df4 = df_mail_list.append(df)
 	return df4
+
 
 class PiperMail:
 	def __init__(self, user, password, host, port, dbname, ghtorrent, buildMode="auto"):
@@ -96,6 +70,7 @@ class PiperMail:
 		#print('GHTorrentPlus: Connecting to {}:{}/{}?{} as {}'.format(host, port, dbname, char,user))
 		self.db = s.create_engine(self.DB_STR, poolclass=s.pool.NullPool)
 		self.ghtorrent = ghtorrent
+
 
 		try:
 		    	# Table creation
@@ -116,7 +91,7 @@ class PiperMail:
 		print("ugh")
 		print(link)
 		upload  = False
-		archives = ["alto-dev"]
+		archives = ["aalldp-dev","affinity-dev","archetypes-dev","aaa-dev"]
 		'''if("augur/notebooks" in os.getcwd()):
 				os.chdir("..")
 				print(os.getcwd())
@@ -141,6 +116,7 @@ class PiperMail:
 			# decoding the JSON to dictionay
 			di = json.loads(data)
 
+
 			#print(di)
 			# converting json dataset from dictionary to dataframe
 			##print(di["data"]["body"]["plain"])
@@ -163,31 +139,20 @@ class PiperMail:
 			#print(len(x))
 			#print(j)
 			val = False
-			row = 0
-			y = 1
 			while(j<len(x)):
-				if(row>y*500):
-					y+=1
-					df = df.reset_index(drop=True)
-					df.to_sql(name=archives[i], con=self.db,if_exists='append',index=False)
-					df.to_csv(name + ".csv", mode='a')
-					df1= pd.DataFrame(columns = columns1)
-					df = df1
-					#print(df)
 				data,r= read_json(x[j:])
 				j+=r
 				#print(j,"\n\n\n")
 				if(j==len(x)):
 					break
 				di = json.loads(data)
-				df = add_row_mess(columns1,df,di,archives[i],row)
-				row+=1
+				df = add_row_mess(columns1,df,di,archives[i])
 			if(i!=0):
 				df_mail_list = add_row_mail_list(columns2,di,df_mail_list)
 			df = df.reset_index(drop=True)
-			df.to_csv(name + ".csv", mode='a')
+			df.to_csv(name + ".csv")
 			#print(archives[i])
-			df.to_sql(name=archives[i], con=self.db,if_exists='append',index=False)
+			df.to_sql(name=archives[i], con=self.db, if_exists = 'replace', index=False)
 			print("File uploaded")
 			upload = True
 		print(upload)
