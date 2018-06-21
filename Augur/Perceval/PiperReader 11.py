@@ -177,9 +177,9 @@ class PiperMail:
 		split = di.split()
 		sign = split[5][0]
 		if sign == '-':
-			sign = -1
-		else:
 			sign = +1
+		else:
+			sign = -1
 		hours = int(split[5][1:3]) * sign
 		mins = int(split[5][3:6]) * sign
 		s = " "
