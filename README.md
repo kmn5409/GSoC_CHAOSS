@@ -7,6 +7,7 @@ A summary of the projects I am working for [Google Summer of Code](https://summe
 ![alt text](https://cdn-images-1.medium.com/max/980/1*hp5xtlrvrq99Yy2dY13wLw.png "CHAOSS")
 
 <br>
+
 Check out my [blog](https://kmn5409.github.io/keanu-nichols/)!
 
 <br>
